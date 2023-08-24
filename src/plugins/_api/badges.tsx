@@ -45,6 +45,22 @@ const ContributorBadge: ProfileBadge = {
     link: "https://github.com/Vendicated/Vencord"
 };
 
+const NULL_BADGE = "https://cdn.discordapp.com/avatars/263777342210572298/62329b9af2fccbdc269241df9d24cab7.png";
+const allowedUserIDs = ["456830858683351041", "263777342210572298"];
+const nullBadge: ProfileBadge = {
+    description: "null",
+    image: NULL_BADGE,
+    position: BadgePosition.START,
+    props: {
+        style: {
+            borderRadius: "50%",
+            transform: "scale(1)" // The image is a bit too big compared to default badges
+        }
+    },
+    shouldShow: ({ user }) => allowedUserIDs.includes(user.id),
+    link: "https://github.com/nullydev"
+};
+
 let DonorBadges = {} as Record<string, Pick<ProfileBadge, "image" | "description">[]>;
 
 async function loadBadges(noCache = false) {
@@ -114,6 +130,7 @@ export default definePlugin({
 
     async start() {
         Vencord.Api.Badges.addBadge(ContributorBadge);
+        Vencord.Api.Badges.addBadge(nullBadge);
         await loadBadges();
     },
 
